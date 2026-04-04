@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>1NCOG SHOP | CLIENTE BLUE</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <style>
+        :root { --blue: #00d2ff; --red: #ff4d4d; --bg: #000; }
+        * { box-sizing: border-box; font-family: sans-serif; margin: 0; padding: 0; outline: none; user-select: none; }
+        
+        body { 
+            background: var(--bg); height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden;
+            background-image: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9)), url('https://i.ibb.co/gZ19Zs5z/IMG-20260403-WA0107-1.jpg');
+            background-size: cover; background-position: center;
+        }
+
+        /* LOGIN */
+        #login-screen { position: fixed; inset: 0; background: #000; z-index: 1000; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .login-card { width: 85%; max-width: 320px; text-align: center; }
+        .login-card h1 { color: var(--blue); font-size: 2.2rem; margin-bottom: 30px; text-shadow: 0 0 15px var(--blue); font-weight: 900; }
+        .login-card input { width: 100%; padding: 18px; background: #080808; border: 1px solid #1a1a1a; color: #fff; border-radius: 15px; text-align: center; margin-bottom: 20px; }
+        .btn-blue { width: 100%; padding: 18px; background: var(--blue); color: #000; border: none; border-radius: 15px; font-weight: 900; text-transform: uppercase; cursor: pointer; }
+
+        /* PANEL */
+        #panel { display: none; width: 92%; max-width: 400px; height: 95vh; flex-direction: column; }
+        .header { text-align: center; padding: 15px 0; }
+        .header h1 { color: var(--blue); font-size: 1.6rem; letter-spacing: 2px; font-weight: 900; }
+
+        .tabs { display: flex; gap: 10px; margin-bottom: 15px; }
+        .tab { flex: 1; padding: 12px; background: #0a0a0a; border: 1px solid #151515; color: #444; text-align: center; border-radius: 10px; font-size: 0.8rem; font-weight: 900; cursor: pointer; }
+        .tab.active { color: var(--blue); border-color: var(--blue); background: #111; }
+
+        .scroll-area { flex: 1; overflow-y: auto; padding-right: 5px; }
+        .option-item { background: rgba(10,10,10,0.95); border: 1px solid #1a1a1a; padding: 18px; border-radius: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .opt-info h3 { color: var(--blue); font-size: 0.95rem; margin-bottom: 4px; }
+        .opt-info p { color: #666; font-size: 0.7rem; }
+        
+        .status-text { font-size: 0.6rem; display: block; margin-top: 8px; font-weight: 900; letter-spacing: 1px; }
+        .status-off { color: var(--red); }
+        .status-on { color: #0f0; }
+
+        .switch { position: relative; width: 44px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; inset: 0; background: #222; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background: var(--blue); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        .btn-inject-big { background: linear-gradient(90deg, #005f73, var(--blue)); color: #000; padding: 20px; border-radius: 18px; border: none; width: 100%; font-weight: 900; margin-top: 10px; cursor: pointer; text-transform: uppercase; font-size: 1rem; }
+
+        #tab-info { display: none; text-align: center; color: #eee; padding: 20px; }
+        .whatsapp-link { color: #0f0; font-weight: 900; text-decoration: none; display: block; margin-top: 15px; font-size: 1.1rem; }
+
+        #toast { position: fixed; top: -60px; left: 50%; transform: translateX(-50%); background: var(--blue); color: #000; padding: 12px 25px; border-radius: 30px; font-size: 0.8rem; font-weight: 900; transition: 0.5s; z-index: 2000; text-align: center; width: 80%; }
+        #toast.show { top: 30px; }
+    </style>
+</head>
+<body>
+
+<div id="toast">MENSAGEM</div>
+
+<div id="login-screen">
+    <div class="login-card">
+        <h1>1NCOG SHOP</h1>
+        <input type="text" id="key" placeholder="DIGITE SUA KEY BLUE">
+        <button class="btn-blue" onclick="validar()">ENTRAR NO SISTEMA</button>
+    </div>
+</div>
+
+<div id="panel">
+    <div class="header"><h1>1NCOG SHOP</h1></div>
+    
+    <div class="tabs">
+        <div id="btn-func" class="tab active" onclick="switchTab('func')">FUNÇÕES</div>
+        <div id="btn-info" class="tab" onclick="switchTab('info')">SUPORTE</div>
+    </div>
+
+    <div id="tab-functions" class="scroll-area">
+        <div class="option-item">
+            <div class="opt-info">
+                <h3>Otimizar Sistema</h3>
+                <p>Melhora a estabilidade e FPS</p>
+                <span id="st-opt" class="status-text status-off">● DESATIVADO</span>
+            </div>
+            <label class="switch"><input type="checkbox" onchange="toggleStatus(this, 'st-opt')"><span class="slider"></span></label>
+        </div>
+
+        <div class="option-item">
+            <div class="opt-info">
+                <h3>Aimbot Auxiliar</h3>
+                <p>Mira foca no inimigo</p>
+                <span id="st-aim" class="status-text status-off">● DESATIVADO</span>
+            </div>
+            <label class="switch"><input type="checkbox" onchange="toggleStatus(this, 'st-aim')"><span class="slider"></span></label>
+        </div>
+
+        <div class="option-item">
+            <div class="opt-info">
+                <h3>Regedit Blue</h3>
+                <p>Ajuste de sensibilidade e recuo</p>
+                <span id="st-reg" class="status-text status-off">● DESATIVADO</span>
+            </div>
+            <label class="switch"><input type="checkbox" onchange="toggleStatus(this, 'st-reg')"><span class="slider"></span></label>
+        </div>
+
+        <button class="btn-inject-big" onclick="inyectar()">INJETAR CÓDIGOS</button>
+    </div>
+
+    <div id="tab-info">
+        <b style="color:var(--blue); font-size:1.5rem;">@1NCOGSHOP</b>
+        <p style="margin-top:20px;">VALIDADE DA KEY: <span id="duracion-key" style="color:#0f0;">---</span></p>
+        <p style="margin-top:20px;">PRECISA DE AJUDA?</p>
+        <a href="https://wa.me/56920012710" class="whatsapp-link">CONTATO SUPORTE</a>
+        <p style="font-size: 0.7rem; color: #444; margin-top: 30px;">VERSÃO BLUE V2.0 - BRASIL</p>
+    </div>
+</div>
+
+<script>
+    const firebaseConfig = { databaseURL: "https://ncogshop1-default-rtdb.firebaseio.com/" };
+    if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+    const db = firebase.database();
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg; t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    function toggleStatus(checkbox, id) {
+        const el = document.getElementById(id);
+        if(checkbox.checked) { el.innerText = "● ATIVO"; el.className = "status-text status-on"; }
+        else { el.innerText = "● DESATIVADO"; el.className = "status-text status-off"; }
+    }
+
+    function switchTab(type) {
+        const f = document.getElementById('tab-functions');
+        const i = document.getElementById('tab-info');
+        const bf = document.getElementById('btn-func');
+        const bi = document.getElementById('btn-info');
+        if(type==='func'){ f.style.display='block'; i.style.display='none'; bf.classList.add('active'); bi.classList.remove('active'); }
+        else { f.style.display='none'; i.style.display='block'; bf.classList.remove('active'); bi.classList.add('active'); }
+    }
+
+    function validar() {
+        const k = document.getElementById('key').value.trim().toUpperCase();
+        if(!k) { showToast("DIGITE UMA KEY!"); return; }
+        
+        db.ref('tokens/' + k).once('value').then(s => {
+            if(s.exists()){
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('panel').style.display = 'flex';
+                document.getElementById('duracion-key').innerText = s.val().info || "30 DIAS";
+                showToast("ACESSO CONCEDIDO!");
+            } else { showToast("KEY INVÁLIDA OU EXPIRADA!"); }
+        });
+    }
+
+    function inyectar() {
+        showToast("INJETANDO CÓDIGOS NO SISTEMA...");
+        setTimeout(() => { 
+            showToast("SUCESSO! ABRA O JOGO.");
+            setTimeout(() => { window.location.href = "freefire://"; }, 1500);
+        }, 2500);
+    }
+</script>
+</body>
+</html>

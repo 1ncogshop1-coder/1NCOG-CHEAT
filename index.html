@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>1NCOG SHOP | BLUE EDITION</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https:///firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <style>
         :root { --blue: #00d2ff; --red: #ff4d4d; --bg: #000; --card: rgba(10,10,10,0.95); }
@@ -23,16 +23,15 @@
         #login-screen { position: fixed; inset: 0; background: #000; z-index: 1000; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .login-card { width: 85%; max-width: 320px; text-align: center; }
         .login-card h1 { color: var(--blue); font-size: 2.2rem; margin-bottom: 30px; text-shadow: 0 0 15px var(--blue); font-weight: 900; }
-        .login-card input { width: 100%; padding: 18px; background: #080808; border: 1px solid #1a1a1a; color: #fff; border-radius: 15px; text-align: center; margin-bottom: 20px; font-weight: bold; border-bottom: 2px solid var(--blue); }
-        .btn-blue { width: 100%; padding: 18px; background: var(--blue); color: #000; border: none; border-radius: 15px; font-weight: 900; text-transform: uppercase; cursor: pointer; }
+        .login-card input { width: 100%; padding: 18px; background: #080808; border: 1px solid #1a1a1a; color: #fff; border-radius: 15px; text-align: center; margin-bottom: 20px; font-weight: bold; border-bottom: 2px solid var(--blue); text-transform: uppercase; }
 
         #panel { display: none; width: 92%; max-width: 400px; height: 95vh; flex-direction: column; }
         .header { text-align: center; padding: 15px 0; }
         .header h1 { color: var(--blue); font-size: 1.6rem; letter-spacing: 2px; font-weight: 900; text-shadow: 0 0 10px var(--blue); }
 
         .tabs { display: flex; gap: 8px; margin-bottom: 15px; }
-        .tab { flex: 1; padding: 12px 5px; background: rgba(15,15,15,0.8); border: 1px solid #222; color: #555; text-align: center; border-radius: 12px; font-size: 0.6rem; font-weight: 900; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
-        .tab.active { color: var(--blue); border-color: var(--blue); background: #111; box-shadow: inset 0 0 10px rgba(0,210,255,0.1); }
+        .tab { flex: 1; padding: 12px; background: rgba(15,15,15,0.8); border: 1px solid #222; color: #555; text-align: center; border-radius: 12px; font-size: 0.6rem; font-weight: 900; cursor: pointer; text-transform: uppercase; }
+        .tab.active { color: var(--blue); border-color: var(--blue); background: #111; }
 
         .scroll-area { flex: 1; overflow-y: auto; padding-bottom: 20px; }
         
@@ -43,6 +42,7 @@
         .status-off { color: var(--red); }
         .status-on { color: #0f0; }
 
+        /* SWITCHES */
         .switch { position: relative; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; inset: 0; background: #222; transition: .4s; border-radius: 34px; }
@@ -50,19 +50,16 @@
         input:checked + .slider { background: var(--blue); box-shadow: 0 0 8px var(--blue); }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        .btn-inject-big { background: linear-gradient(90deg, #005f73, var(--blue)); color: #000; padding: 20px; border-radius: 20px; border: none; width: 100%; font-weight: 900; margin-top: 10px; cursor: pointer; text-transform: uppercase; font-size: 1rem; }
+        .btn-blue { width: 100%; padding: 18px; background: var(--blue); color: #000; border: none; border-radius: 15px; font-weight: 900; text-transform: uppercase; cursor: pointer; }
+        .btn-inject-big { background: linear-gradient(90deg, #005f73, var(--blue)); color: #000; padding: 20px; border-radius: 20px; border: none; width: 100%; font-weight: 900; margin-top: 10px; cursor: pointer; text-transform: uppercase; }
         #btn-force-open { display: none; background: #0f0; margin-top: 15px; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
 
-        /* SENSI STYLES CORREGIDOS */
         .sensi-container { background: var(--card); border: 1px solid var(--blue); padding: 20px; border-radius: 20px; text-align: center; }
-        .sensi-select { width: 100%; padding: 12px; background: #000; color: #fff; border: 1px solid #333; border-radius: 10px; margin-bottom: 10px; border-bottom: 2px solid var(--blue); font-size: 0.8rem; font-weight: bold; }
+        .sensi-select { width: 100%; padding: 12px; background: #000; color: #fff; border: 1px solid #333; border-radius: 10px; margin-bottom: 10px; border-bottom: 2px solid var(--blue); font-size: 0.8rem; }
         .sensi-result { margin-top: 20px; display: none; text-align: left; background: #050505; padding: 15px; border-radius: 15px; border: 1px dashed var(--blue); }
-        .sensi-result p { color: #fff; font-size: 0.85rem; margin-bottom: 8px; font-weight: 600; border-bottom: 1px solid #111; padding-bottom: 3px; }
-        .sensi-result span { color: var(--blue); font-weight: 900; float: right; font-size: 1rem; }
-
-        #tab-info { display: none; text-align: center; color: #eee; padding: 20px; background: var(--card); border-radius: 20px; }
-        .whatsapp-link { color: #0f0; font-weight: 900; text-decoration: none; display: block; margin-top: 15px; font-size: 1.1rem; border: 1px solid #0f0; padding: 10px; border-radius: 10px; }
+        .sensi-result p { color: #fff; font-size: 0.85rem; margin-bottom: 8px; font-weight: 600; }
+        .sensi-result span { color: var(--blue); font-weight: 900; float: right; }
     </style>
 </head>
 <body>
@@ -72,8 +69,8 @@
 <div id="login-screen">
     <div class="login-card">
         <h1>1NCOG SHOP</h1>
-        <input type="text" id="key" placeholder="INSIRA SUA KEY BLUE AQUI">
-        <button class="btn-blue" onclick="validar()">AUTENTICAR NO SISTEMA</button>
+        <input type="text" id="key" placeholder="COLE SUA KEY BLUE AQUI">
+        <button class="btn-blue" onclick="validar()">AUTENTICAR</button>
     </div>
 </div>
 
@@ -82,76 +79,56 @@
     
     <div class="tabs">
         <div id="btn-func" class="tab active" onclick="switchTab('func')">MOD MENU</div>
-        <div id="btn-sensi" class="tab" onclick="switchTab('sensi')">GERAR SENSI</div>
-        <div id="btn-info" class="tab" onclick="switchTab('info')">SUPORTE</div>
+        <div id="btn-sensi" class="tab" onclick="switchTab('sensi')">SENSI</div>
+        <div id="btn-info" class="tab" onclick="switchTab('info')">INFO</div>
     </div>
 
     <div id="tab-functions" class="scroll-area">
         <div class="option-item">
-            <div class="opt-info"><h3>Otimizar FPS</h3><p>Estabiliza o sistema do jogo</p><span id="st-opt" class="status-text status-off">● DESATIVADO</span></div>
+            <div class="opt-info"><h3>Otimizar FPS</h3><p>Estabiliza o sistema</p><span id="st-opt" class="status-text status-off">● DESATIVADO</span></div>
             <label class="switch"><input type="checkbox" onchange="toggleStatus(this, 'st-opt')"><span class="slider"></span></label>
         </div>
         <div class="option-item">
-            <div class="opt-info"><h3>Aimbot Auxiliar</h3><p>Mira foca no inimigo suavemente</p><span id="st-aim" class="status-text status-off">● DESATIVADO</span></div>
+            <div class="opt-info"><h3>Aimbot Auxiliar</h3><p>Mira suave no inimigo</p><span id="st-aim" class="status-text status-off">● DESATIVADO</span></div>
             <label class="switch"><input type="checkbox" onchange="toggleStatus(this, 'st-aim')"><span class="slider"></span></label>
         </div>
         <div class="option-item">
-            <div class="opt-info"><h3>Regedit Blue</h3><p>Ajuste de sensibilidade interna</p><span id="st-reg" class="status-text status-off">● DESATIVADO</span></div>
+            <div class="opt-info"><h3>Regedit Blue</h3><p>Ajuste interno VIP</p><span id="st-reg" class="status-text status-off">● DESATIVADO</span></div>
             <label class="switch"><input type="checkbox" onchange="toggleStatus(this, 'st-reg')"><span class="slider"></span></label>
         </div>
+
         <button id="btn-main" class="btn-inject-big" onclick="inyectar()">INJETAR CÓDIGOS</button>
-        <button id="btn-force-open" class="btn-inject-big" onclick="abrirJogoForzado()">ABRIR FREE FIRE ⚡</button>
+        <button id="btn-force-open" class="btn-inject-big" onclick="abrirJogoForzado()">ABRIR JOGO ⚡</button>
     </div>
 
     <div id="tab-sensi" class="scroll-area" style="display:none;">
         <div class="sensi-container">
-            <h3 style="color:var(--blue); margin-bottom:15px; font-size: 1.2rem;">VIP SENSITIVITY</h3>
-            
-            <label style="color:#888; font-size:0.7rem; display:block; margin-bottom:5px; text-align:left;">PLATAFORMA:</label>
-            <select id="platform-select" class="sensi-select">
-                <option value="android">ANDROID</option>
-                <option value="ios">iOS</option>
-                <option value="pc">PC</option>
-            </select>
-
-            <label style="color:#888; font-size:0.7rem; display:block; margin-bottom:5px; text-align:left;">TIPO DE SENSI:</label>
-            <select id="type-select" class="sensi-select">
-                <option value="baja">SENSI BAJA</option>
-                <option value="media">SENSI MEDIA</option>
-                <option value="alta">SENSI ALTA (170-200)</option>
-            </select>
-            
-            <button class="btn-blue" onclick="generarSensi()" style="margin-top:10px;">GERAR AGORA</button>
+            <select id="p-sel" class="sensi-select"><option value="android">ANDROID</option><option value="ios">iOS</option><option value="pc">PC</option></select>
+            <select id="t-sel" class="sensi-select"><option value="baja">SENSI BAJA</option><option value="media">SENSI MEDIA</option><option value="alta">SENSI ALTA (200)</option></select>
+            <button class="btn-blue" onclick="generarSensi()">GERAR AGORA</button>
 
             <div id="result-sensi" class="sensi-result">
-                <p>GERAL: <span id="val-geral">0</span></p>
-                <p>PONTO VERMELHO: <span id="val-red">0</span></p>
-                <p>MIRA 2X: <span id="val-2x">0</span></p>
-                <p>MIRA 4X: <span id="val-4x">0</span></p>
-                <p>DPI / CURSOR: <span id="val-dpi">0</span></p>
+                <p>GERAL: <span id="val-g">0</span></p>
+                <p>RED DOT: <span id="val-r">0</span></p>
+                <p>DPI / CURSOR: <span id="val-d">0</span></p>
             </div>
         </div>
     </div>
 
-    <div id="tab-info" class="scroll-area">
+    <div id="tab-info" class="scroll-area" style="display:none; text-align:center; color:#eee;">
         <b style="color:var(--blue); font-size:1.5rem;">@1NCOGSHOP</b>
         <p style="margin-top:20px;">KEY STATUS: <span id="duracion-key" style="color:#0f0;">---</span></p>
         <hr style="border:0; border-top:1px solid #222; margin:20px 0;">
-        <a href="https://wa.me/56920012710" class="whatsapp-link">FALAR COM SUPORTE</a>
-        <p style="margin-top:30px; font-size:0.6rem; color:#555;">© 1NCOG SHOP - DESENVOLVIDO POR 1NCOG</p>
+        <a href="https://wa.me/56920012710" style="color:#0f0; text-decoration:none; border:1px solid #0f0; padding:10px; border-radius:10px; display:block;">SUPORTE WHATSAPP</a>
     </div>
 </div>
 
 <script>
     const firebaseConfig = { databaseURL: "https://ncogshop1-default-rtdb.firebaseio.com/" };
-    if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+    firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    function showToast(msg) {
-        const t = document.getElementById('toast');
-        t.innerText = msg; t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 3000);
-    }
+    function showToast(m) { const t=document.getElementById('toast'); t.innerText=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
 
     function toggleStatus(checkbox, id) {
         const el = document.getElementById(id);
@@ -159,73 +136,48 @@
         else { el.innerText = "● DESATIVADO"; el.className = "status-text status-off"; }
     }
 
-    function switchTab(type) {
-        const tabs = ['tab-functions', 'tab-sensi', 'tab-info'];
-        const btns = ['btn-func', 'btn-sensi', 'btn-info'];
-        tabs.forEach(t => document.getElementById(t).style.display = 'none');
-        btns.forEach(b => document.getElementById(b).classList.remove('active'));
-        const targetTab = type === 'func' ? 'tab-functions' : 'tab-' + type;
-        document.getElementById(targetTab).style.display = 'block';
-        document.getElementById('btn-' + type).classList.add('active');
-    }
-
     function validar() {
         const k = document.getElementById('key').value.trim().toUpperCase();
-        if(!k) { showToast("COLE SUA KEY!"); return; }
+        if(!k) return showToast("COLE SUA KEY!");
         db.ref('tokens/' + k).once('value').then(s => {
             if(s.exists()){
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('panel').style.display = 'flex';
-                document.getElementById('duracion-key').innerText = s.val().info || "PERMANENTE";
+                document.getElementById('duracion-key').innerText = s.val().info || "ACTIVA";
                 showToast("BEM-VINDO!");
             } else { showToast("KEY INVÁLIDA!"); }
         });
     }
 
+    function switchTab(type) {
+        document.getElementById('tab-functions').style.display = type==='func'?'block':'none';
+        document.getElementById('tab-sensi').style.display = type==='sensi'?'block':'none';
+        document.getElementById('tab-info').style.display = type==='info'?'block':'none';
+        document.getElementById('btn-func').classList.toggle('active', type==='func');
+        document.getElementById('btn-sensi').classList.toggle('active', type==='sensi');
+        document.getElementById('btn-info').classList.toggle('active', type==='info');
+    }
+
     function generarSensi() {
-        const platform = document.getElementById('platform-select').value;
-        const type = document.getElementById('type-select').value;
-        const r = (a, b) => Math.floor(Math.random() * (b - a + 1) + a);
-        
-        let min, max, dpiMin, dpiMax;
-
-        if(type === 'baja') { min = 70; max = 85; dpiMin = 360; dpiMax = 500; }
-        else if(type === 'media') { min = 86; max = 98; dpiMin = 510; dpiMax = 750; }
-        else { min = 170; max = 200; dpiMin = 800; dpiMax = 1200; }
-
-        if(platform === 'ios') {
-            document.getElementById('val-dpi').innerText = r(100, 120) + " (Individual)";
-        } else if(platform === 'pc') {
-            document.getElementById('val-dpi').innerText = r(800, 1600) + " DPI";
-        } else {
-            document.getElementById('val-dpi').innerText = r(dpiMin, dpiMax);
-        }
-
-        document.getElementById('val-geral').innerText = r(min, max);
-        document.getElementById('val-red').innerText = r(min - 2, max);
-        document.getElementById('val-2x').innerText = r(min, max);
-        document.getElementById('val-4x').innerText = r(min, max);
-        
+        const type = document.getElementById('t-sel').value;
+        const r = (a,b) => Math.floor(Math.random()*(b-a+1)+a);
+        let min = type==='alta'?170:type==='media'?90:70;
+        document.getElementById('val-g').innerText = r(min, 200);
+        document.getElementById('val-r').innerText = r(min, 200);
+        document.getElementById('val-d').innerText = r(500, 1200);
         document.getElementById('result-sensi').style.display = 'block';
-        showToast("SENSITIVIDADE GERADA!");
     }
 
     function inyectar() {
-        const bMain = document.getElementById('btn-main');
-        const bForce = document.getElementById('btn-force-open');
-        showToast("INJETANDO CÓDIGOS BLUE...");
-        bMain.innerText = "PROCESSANDO...";
+        showToast("INJETANDO...");
         setTimeout(() => { 
-            showToast("SUCESSO! CLIQUE NO BOTÃO VERDE");
-            bMain.style.display = "none";
-            bForce.style.display = "block";
+            document.getElementById('btn-main').style.display='none';
+            document.getElementById('btn-force-open').style.display='block';
             window.location.assign("freefire://");
-        }, 2500);
+        }, 2000);
     }
 
-    function abrirJogoForzado() {
-        window.location.href = "intent://#Intent;scheme=freefire;package=com.dts.freefireth;end";
-    }
+    function abrirJogoForzado() { window.location.href = "intent://#Intent;scheme=freefire;package=com.dts.freefireth;end"; }
 </script>
 </body>
 </html>
